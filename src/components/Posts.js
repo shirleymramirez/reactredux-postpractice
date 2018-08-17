@@ -8,6 +8,17 @@ class Posts extends Component {
     this.props.fetchPosts();
   }
 
+  // when a component receive a property from the state
+  // this will run and it takes in a parameter of next props
+  componentWillReceiveProps(nextProps) {
+    // checks if the new props does exist
+    if (nextProps.newPost) {
+      // if it s there, it will added into the beginning(unshift())
+      // if we want to add it in the end, we can use .push()
+      this.props.posts.unshift(nextProps.newPost);
+    }
+  }
+
   render() {
     const postItems = this.props.posts.map(post => (
       <div key={post.id}>
@@ -26,11 +37,13 @@ class Posts extends Component {
 
 Posts.propTypes = {
   fetchPosts: PropTypes.func.isRequired,
-  posts: PropTypes.array.isRequired
+  posts: PropTypes.array.isRequired,
+  newPost: PropTypes.object
 };
 
 const mapStatToProps = state => ({
-  posts: state.posts.items
+  posts: state.posts.items,
+  newPost: state.posts.item
 });
 
 export default connect(
